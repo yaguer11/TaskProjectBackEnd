@@ -1,0 +1,24 @@
+meta {
+  name: POST task
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/tasks/
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "id":"holasegundatarea",
+    "title":"Duis mattis egestas metus. Aenean fermentum. Donec ut mauris eget massa tempor convallis. Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh. Quisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est. Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros.",
+    "description":"Quisque porta volutpat erat. Quisque erat eros, viverra eget, congue eget, semper rutrum, nulla. Nunc purus.\n\nPhasellus in felis. Donec semper sapien a libero. Nam dui.",
+    "start":"5/8/2024",
+    "end":"6/12/2024",
+    "status":"done",
+    "geo-long":21.5587544,
+    "geo-lat ":-4.8531154
+  }
+}
