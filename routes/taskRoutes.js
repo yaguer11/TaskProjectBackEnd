@@ -4,23 +4,16 @@ const {
   updateTask,
   deleteTask,
   getTaskById,
+  getTasks,
 } = require("../controller/task");
 const Task = require("../model/task");
 
 const router = express.Router();
 
 // Obtener todas las tareas
-router.get("/", async (req, res) => {
-  try {
-    const tasks = await Task.find();
-    res.status(200).json(tasks);
-  } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Error al obtener las tareas", error: err.message });
-  }
-});
+router.get("/", getTasks);
 
+// Obtener tarea segun id
 router.get("/:id", getTaskById);
 
 // Crear una nueva tarea

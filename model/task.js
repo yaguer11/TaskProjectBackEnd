@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// Defino la esrucutura de los datos para las tareas
 const taskSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: String,

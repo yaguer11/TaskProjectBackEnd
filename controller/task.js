@@ -1,5 +1,35 @@
 const Task = require("../model/task");
 
+// Controlador para mostrar todas las tareas
+module.exports.getTasks = (req, res) => {
+  Task.find()
+    .then((tasks) => {
+      res.status(200).json(tasks);
+    })
+    .catch((err) => {
+      res
+        .status(500)
+        .json({ message: "Error al obtener las tareas", error: err.message });
+    });
+};
+
+// Controlador para buscar una tarea por ID (método GET)
+module.exports.getTaskById = (req, res) => {
+  const taskId = req.params.id;
+  Task.findById(taskId)
+    .then((task) => {
+      if (!task) {
+        return res.status(404).json({ message: "Tarea no encontrada" });
+      }
+      res.status(200).json(task);
+    })
+    .catch((err) => {
+      res
+        .status(500)
+        .json({ message: "Error al buscar la tarea", error: err.message });
+    });
+};
+
 // Crear una nueva tarea
 module.exports.createTask = (req, res) => {
   const { title, description, start, end, status, geoLong, geoLat } = req.body;
@@ -76,21 +106,4 @@ module.exports.deleteTask = (req, res) => {
         error: err.message,
       });
     });
-};
-
-// Controlador para buscar una tarea por ID (método GET)
-module.exports.getTaskById = async (req, res) => {
-  const taskId = req.params.id;
-
-  try {
-    const task = await Task.findById(taskId);
-    if (!task) {
-      return res.status(404).json({ message: "Tarea no encontrada" });
-    }
-    res.status(200).json(task);
-  } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Error al buscar la tarea", error: err.message });
-  }
 };
