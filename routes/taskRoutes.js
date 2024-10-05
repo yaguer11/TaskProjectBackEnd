@@ -1,5 +1,6 @@
 const express = require("express");
 const fs = require("fs");
+const { createTask } = require("../controller/task");
 
 const router = express.Router();
 const tasks = require("../MockData.json");
@@ -23,12 +24,7 @@ router.get("/:id", (req, res) => {
   }
 });
 
-router.post("/", (req, res) => {
-  const newTask = req.body;
-  tasks.push(newTask);
-  saveTasksToFile(tasks);
-  res.status(201).json(newTask);
-});
+router.post("/", createTask);
 
 router.put("/:id", (req, res) => {
   const taskId = req.params.id;
