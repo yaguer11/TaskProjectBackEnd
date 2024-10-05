@@ -1,42 +1,14 @@
 const mongoose = require("mongoose");
-const schema = mongoose.Schema;
 
-const taskSchema = new schema({
-  id: {
-    type: String,
-    required: false,
-  },
-  title: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: false,
-    default: "",
-  },
-  start: {
-    type: Date,
-    required: true,
-    default: Date.now,
-  },
-  end: {
-    type: Date,
-    required: false,
-  },
-  status: {
-    type: String,
-    enum: ["pending", "in progress", "done"],
-    required: true,
-  },
-  geo_long: {
-    type: String,
-    required: false,
-  },
-  geo_lat: {
-    type: String,
-    required: false,
-  },
+const taskSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  description: String,
+  start: Date,
+  end: Date,
+  status: { type: String, enum: ["pending", "in progress", "done"] },
+  geoLong: Number,
+  geoLat: Number,
 });
 
-module.exports = mongoose.model("tasks_collections", taskSchema);
+const Task = mongoose.model("Task", taskSchema);
+module.exports = Task;
