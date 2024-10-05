@@ -13,7 +13,6 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-  console.log(req.params);
   const taskId = req.params.id;
   const task = tasks.find((task) => task.id === taskId);
   if (task) {
