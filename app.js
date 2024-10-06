@@ -4,6 +4,7 @@ const authRoutes = require("./routes/authRoutes"); // Agrega las rutas de autent
 const mongoose = require("mongoose");
 const dotenv = require("dotenv").config();
 const { verifyToken } = require("./middleware/authMiddleware"); // Importa el middleware de autenticación
+const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
 app.use(express.json());
@@ -32,7 +33,4 @@ mongoose
 app.get("/", (req, res) => res.send("¡Hola!"));
 
 // Middleware para manejo de errores
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: "Algo salió mal", error: err.message });
-});
+app.use(errorHandler);
