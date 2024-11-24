@@ -1,11 +1,15 @@
 meta {
-  name: GET Task
+  name: GET task
   type: http
-  seq: 3
+  seq: 2
 }
 
 get {
-  url: http://localhost:3000/tasks/21
+  url: http://localhost:3001/tasks
   body: none
   auth: none
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDFiZjZjYjY3YmM4YzA2MzExNjU2NiIsImlhdCI6MTczMjQ3MTcxNCwiZXhwIjoxNzMyNDc1MzE0fQ.9sp2RlCfn7KfDVgpJnh13tM17HAHLxgR68tjsktKFYA
 }

@@ -10,14 +10,18 @@ post {
   auth: none
 }
 
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MDFiZjZjYjY3YmM4YzA2MzExNjU2NiIsImlhdCI6MTczMjQ3MTcxNCwiZXhwIjoxNzMyNDc1MzE0fQ.9sp2RlCfn7KfDVgpJnh13tM17HAHLxgR68tjsktKFYA
+}
+
 body:json {
   {
-      "title": "Cosecha de tomates",
-      "description": "Recolectar los tomates maduros del sector 2",
-      "start": "2024-04-02T07:00:00Z",
-      "end": "2024-04-02T10:00:00Z",
-      "status": "in progress",
-      "geoLong": -58.40052,
-      "geoLat": -34.61573
-    }
+    "name": "Mi Tarea",
+    "description": "Descripción de la tarea",
+    "story": "674377e54dbd05f6f2e854f8",
+    "owner": "6701bf6cb67bc8c063116566",
+    "assignedTo": ["6701bf6cb67bc8c063116566"],
+    "status": "running",
+    "due": "2024-11-30"
+  }
 }

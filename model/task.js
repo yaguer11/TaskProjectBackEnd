@@ -2,14 +2,33 @@ const mongoose = require("mongoose");
 
 // Defino la esrucutura de los datos para las tareas
 const taskSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  description: String,
-  start: Date,
-  end: Date,
-  status: { type: String, enum: ["pending", "in progress", "done"] },
-  geoLong: Number,
-  geoLat: Number,
+  name: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: false,
+  },
+  story: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Story",
+    required: true,
+  },
+  created: {
+    type: Date,
+    default: Date.now,
+    required: false,
+  },
+  dueDate: {
+    type: Date,
+    required: false,
+  },
+  done: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 });
 
-const Task = mongoose.model("Task", taskSchema);
-module.exports = Task;
+module.exports = mongoose.model("Task", taskSchema);

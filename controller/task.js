@@ -32,16 +32,15 @@ module.exports.getTaskById = (req, res) => {
 
 // Crear una nueva tarea
 module.exports.createTask = (req, res) => {
-  const { title, description, start, end, status, geoLong, geoLat } = req.body;
+  const { name, description, story, created, dueDate, done } = req.body;
 
   const task = new Task({
-    title,
+    name,
     description,
-    start,
-    end,
-    status,
-    geoLong,
-    geoLat,
+    story,
+    created,
+    dueDate,
+    done,
   });
 
   task
@@ -63,11 +62,11 @@ module.exports.createTask = (req, res) => {
 // Actualizar una tarea existente
 module.exports.updateTask = (req, res) => {
   const { id } = req.params;
-  const { title, description, start, end, status, geoLong, geoLat } = req.body;
+  const { name, description, story, created, dueDate, done } = req.body;
 
   Task.findByIdAndUpdate(
     id,
-    { title, description, start, end, status, geoLong, geoLat },
+    { name, description, story, created, dueDate, done },
     { new: true }
   )
     .then((updatedTask) => {
