@@ -4,14 +4,19 @@ const jwt = require("jsonwebtoken");
 
 // Registro de usuario
 module.exports.register = (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, email, name } = req.body;
 
   // Hashear la contraseña
   bcrypt
     .hash(password, 10)
     .then((hashedPassword) => {
       // Crear un nuevo usuario con la contraseña hasheada
-      const newUser = new User({ username, password: hashedPassword });
+      const newUser = new User({
+        username,
+        password: hashedPassword,
+        email,
+        name,
+      });
 
       // Guardar el nuevo usuario en la base de datos
       return newUser.save();
@@ -45,11 +50,19 @@ module.exports.login = (req, res) => {
 
         // Generar el token JWT
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-          expiresIn: "1h",
+          expiresIn: "2h",
         });
 
         // Enviar el token en la respuesta
-        res.status(200).json({ token });
+        res.status(200).json({
+          token,
+          user: {
+            id: user._id,
+            username: user.username,
+            email: user.email,
+            name: user.name,
+          },
+        });
       });
     })
     .catch((err) => {

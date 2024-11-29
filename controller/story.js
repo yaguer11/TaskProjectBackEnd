@@ -1,10 +1,11 @@
 const Story = require("../model/story");
+const Task = require("../model/task");
 
 exports.getAllStories = (req, res) => {
   Story.find()
     .populate("epic owner assignedTo")
     .then((stories) => {
-      res.status(200).json(stories);
+      res.status(200).json({ data: stories });
     })
     .catch((err) => {
       res.status(500).json({ error: err.message });
@@ -19,6 +20,24 @@ exports.getStoryById = (req, res) => {
         return res.status(404).json({ message: "Story not found" });
       }
       res.status(200).json(story);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+};
+
+exports.getStoriesByEpicId = (req, res) => {
+  const { epicId } = req.params;
+
+  Story.find({ epic: epicId })
+    .populate("epic owner assignedTo")
+    .then((stories) => {
+      if (!stories.length) {
+        return res
+          .status(404)
+          .json({ message: "No stories found for this epic" });
+      }
+      res.status(200).json({ data: stories });
     })
     .catch((err) => {
       res.status(500).json({ error: err.message });
@@ -51,14 +70,20 @@ exports.updateStory = (req, res) => {
 };
 
 exports.deleteStory = (req, res) => {
-  Story.findByIdAndDelete(req.params.id)
-    .then((deletedStory) => {
-      if (!deletedStory) {
-        return res.status(404).json({ message: "Story not found" });
+  const { id } = req.params;
+  Task.find({ story: id })
+    .then((tasks) => {
+      if (tasks.length > 0) {
+        return res.status(400).json({
+          message: "No se puede eliminar: la historia tiene tareas asociadas.",
+        });
       }
-      res.status(200).json({ message: "Story deleted successfully" });
+      return Story.findByIdAndDelete(id).then((deletedStory) => {
+        if (!deletedStory) {
+          return res.status(404).json({ message: "Historia no encontrada." });
+        }
+        res.status(200).json({ message: "Historia eliminada exitosamente." });
+      });
     })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
-    });
+    .catch((error) => res.status(500).json({ error: error.message }));
 };

@@ -1,10 +1,11 @@
 const Project = require("../model/project");
+const Epic = require("../model/epic");
 
 exports.getAllProjects = (req, res) => {
   Project.find()
     .populate("members owner")
     .then((projects) => {
-      res.status(200).json(projects);
+      res.status(200).json({ data: projects });
     })
     .catch((err) => {
       res.status(500).json({ error: err.message });
@@ -51,14 +52,29 @@ exports.updateProject = (req, res) => {
 };
 
 exports.deleteProject = (req, res) => {
-  Project.findByIdAndDelete(req.params.id)
-    .then((deletedProject) => {
-      if (!deletedProject) {
-        return res.status(404).json({ message: "Project not found" });
+  const { id } = req.params;
+
+  Epic.find({ project: id })
+    .then((epics) => {
+      if (epics.length > 0) {
+        return res.status(400).json({
+          message: "No se puede eliminar el proyecto: tiene épicas asociadas.",
+        });
       }
-      res.status(200).json({ message: "Project deleted successfully" });
+      return Project.findByIdAndDelete(id).then((deletedProject) => {
+        if (!deletedProject) {
+          return res.status(404).json({ message: "Proyecto no encontrado." });
+        }
+        return res
+          .status(200)
+          .json({ message: "Proyecto eliminado exitosamente." });
+      });
     })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
+    .catch((error) => {
+      console.error("Error al eliminar el proyecto:", error);
+      res.status(500).json({
+        message: "Error al eliminar el proyecto.",
+        error: error.message,
+      });
     });
 };

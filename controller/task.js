@@ -1,7 +1,7 @@
 const Task = require("../model/task");
 
 // Controlador para mostrar todas las tareas
-module.exports.getTasks = (req, res) => {
+exports.getTasks = (req, res) => {
   Task.find()
     .then((tasks) => {
       res.status(200).json(tasks);
@@ -14,7 +14,7 @@ module.exports.getTasks = (req, res) => {
 };
 
 // Controlador para buscar una tarea por ID (método GET)
-module.exports.getTaskById = (req, res) => {
+exports.getTaskById = (req, res) => {
   const taskId = req.params.id;
   Task.findById(taskId)
     .then((task) => {
@@ -30,8 +30,27 @@ module.exports.getTaskById = (req, res) => {
     });
 };
 
+exports.getTaskByStory = (req, res) => {
+  const { storyId } = req.params;
+  Task.find({ story: storyId })
+    .populate("story") // Solo se incluye "story"
+    .then((tasks) => {
+      if (!tasks.length) {
+        return res
+          .status(404)
+          .json({ message: "No tasks found for this story" });
+      }
+      res.status(200).json({ data: tasks });
+    })
+    .catch((err) => {
+      res
+        .status(500)
+        .json({ message: "Error retrieving tasks", error: err.message });
+    });
+};
+
 // Crear una nueva tarea
-module.exports.createTask = (req, res) => {
+exports.createTask = (req, res) => {
   const { name, description, story, created, dueDate, done } = req.body;
 
   const task = new Task({
@@ -60,7 +79,7 @@ module.exports.createTask = (req, res) => {
 };
 
 // Actualizar una tarea existente
-module.exports.updateTask = (req, res) => {
+exports.updateTask = (req, res) => {
   const { id } = req.params;
   const { name, description, story, created, dueDate, done } = req.body;
 
@@ -87,7 +106,7 @@ module.exports.updateTask = (req, res) => {
 };
 
 // Eliminar una tarea
-module.exports.deleteTask = (req, res) => {
+exports.deleteTask = (req, res) => {
   const { id } = req.params;
 
   Task.findByIdAndDelete(id)
