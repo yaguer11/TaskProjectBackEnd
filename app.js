@@ -1,11 +1,31 @@
 const express = require("express");
-const tasksRoutes = require("./routes/taskRoutes");
+const cors = require("cors");
+
+const { connectDatabase } = require("./config/database");
+const { configureRoutes } = require("./routes/appRoutes");
+const dotenv = require("dotenv").config();
+
+const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
-
 app.use(express.json());
-app.use("/tasks", tasksRoutes);
 
-app.listen(3000, () => console.log("Servidor listo!"));
+// Configura CORS
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Dominio del FrontEnd
+    methods: ["GET", "POST", "PUT", "DELETE"], // Métodos permitidos
+    credentials: true, // Para cookies y encabezados como Authorization
+  })
+);
 
-app.get("/", (req, res) => res.send("¡Hola!"));
+connectDatabase();
+configureRoutes(app);
+
+const puerto = process.env.PUERTO || 3002;
+app.listen(puerto, () => {
+  console.log(`Servidor escuchando en el puerto ${puerto}`);
+});
+
+// Middleware para manejo de errores
+app.use(errorHandler);

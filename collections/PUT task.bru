@@ -1,11 +1,17 @@
 meta {
   name: PUT task
   type: http
-  seq: 4
+  seq: 3
 }
 
 put {
-  url: http://localhost:3000/tasks/
-  body: none
+  url: http://localhost:3001/tasks/670180cefe0fd139e4de579a
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "title": "Cosecha de frutillas"
+  }
 }
