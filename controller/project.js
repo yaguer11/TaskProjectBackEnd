@@ -2,7 +2,11 @@ const Project = require("../model/project");
 const Epic = require("../model/epic");
 
 exports.getAllProjects = (req, res) => {
-  Project.find()
+  const userId = req.userId;
+
+  Project.find({
+    $or: [{ owner: userId }, { members: userId }],
+  })
     .populate("members owner")
     .then((projects) => {
       res.status(200).json({ data: projects });
