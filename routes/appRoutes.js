@@ -3,6 +3,7 @@ const authRoutes = require("./authRoutes");
 const projectRoutes = require("./projectRoutes");
 const epicRoutes = require("./epicRoutes");
 const storyRoutes = require("./storyRoutes");
+const userRoutes = require("./userRoutes");
 const { verifyToken } = require("../middleware/authMiddleware");
 
 function configureRoutes(app) {
@@ -14,6 +15,7 @@ function configureRoutes(app) {
   app.use("/projects", verifyToken, projectRoutes);
   app.use("/epics", verifyToken, epicRoutes);
   app.use("/stories", verifyToken, storyRoutes);
+  app.use("/user", verifyToken, userRoutes);
 
   // Ruta principal
   app.get("/", (req, res) =>
