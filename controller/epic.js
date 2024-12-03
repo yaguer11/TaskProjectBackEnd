@@ -3,7 +3,7 @@ const Story = require("../model/story");
 
 exports.getAllEpics = (req, res) => {
   Epic.find()
-    .populate("project") // Solo se necesita `project`, según el modelo actualizado
+    .populate("project")
     .then((epics) => {
       res.status(200).json(epics);
     })

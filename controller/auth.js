@@ -71,3 +71,11 @@ module.exports.login = (req, res) => {
         .json({ message: "Error al iniciar sesión", error: err.message });
     });
 };
+
+module.exports.loginInfo = (req, res) => {
+  res
+    .status(400)
+    .send(
+      "Debes realizar un POST a esta ruta con tu usuario y contraseña para iniciar sesión."
+    );
+};
